@@ -9,22 +9,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
 public class ImageSliderAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private int[] images = new int[]{
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher_round,
-            R.mipmap.ic_launcher_round
-    };
-
-    public ImageSliderAdapter(Context context){
+    private List<String> urls;
+    public ImageSliderAdapter(Context context, List<String> urls){
         this.context =context;
+        this.urls = urls;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
     public int getCount() {
-        return images.length;
+        return urls.size();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.image_slide, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        imageView.setImageResource(images[position]);
+        Glide.with(context).load(urls.get(position)).into(imageView);
 
         container.addView(itemView);
 

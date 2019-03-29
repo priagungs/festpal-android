@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
         viewPagerAdapter.addFragment(rootFragment);
         User user = UtilsManager.getUser(this);
-        if(!user.getUMKM()){
+        if(user.getUMKM()){
             viewPagerAdapter.addFragment(bookedFragment);
         }else{
             viewPagerAdapter.addFragment(new FavoriteFragment());

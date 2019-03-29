@@ -7,4 +7,6 @@ public class Constant {
     public static String GET_EVENTS_FAVORITE_USER = BASE_URL+"api/user/favorites/";
     public static String GET_USER = BASE_URL + "api/user/";
     public static String POST_USER = BASE_URL + "api/user";
+    public static String PUT_FAVORITE = BASE_URL + "api/user/favorites";
+
 }

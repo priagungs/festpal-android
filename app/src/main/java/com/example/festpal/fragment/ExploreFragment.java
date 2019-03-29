@@ -1,5 +1,6 @@
 package com.example.festpal.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,21 @@ import com.example.festpal.ImageSliderAdapter;
 import com.example.festpal.ImageSliderTitleAdapter;
 import com.example.festpal.R;
 import com.example.festpal.activity.MainActivity;
+import com.example.festpal.model.Event;
+import com.example.festpal.utils.Constant;
+import com.example.festpal.utils.UtilsManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class ExploreFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,17 +94,13 @@ public class ExploreFragment extends Fragment {
         mImageSlider = (ViewPager) view.findViewById(R.id.image_slider);
         mDotsIndicator = (TabLayout) view.findViewById(R.id.tabDots);
         mFestivalTerdekat = (RecyclerView) view.findViewById(R.id.festival_terdekat);
-        FestivalCardAdapter festivalCardAdapter = new FestivalCardAdapter(this.getContext());
-        ImageSliderTitleAdapter adapter = new ImageSliderTitleAdapter(this.getContext());
-        mImageSlider.setAdapter(adapter);
-        mFestivalTerdekat.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
-        mFestivalTerdekat.setAdapter(festivalCardAdapter);
-        mDotsIndicator.setupWithViewPager(mImageSlider);
 
         tvFavorite = view.findViewById(R.id.tv_favorite);
         tvSoon = view.findViewById(R.id.tv_soon);
 
         initializeListener();
+        new FavoriteFestival().execute();
+        new SoonFestival().execute();
         return view;
     }
 
@@ -127,6 +139,114 @@ public class ExploreFragment extends Fragment {
                 ((MainActivity) getActivity()).getSoonFestival();
             }
         });
+    }
+
+    private class FavoriteFestival extends AsyncTask<String, Void, Integer> {
+
+        private String result;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            String url = Constant.GET_EVENTS + "?sortBy='favorite'" ;
+            Log.d(TAG, "doInBackground: url " + url);
+            Request request = new Request.Builder().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: response code " + response.code());
+                if (response.code() != 200) {
+                    return -1;
+                }
+                result = response.body().string();
+                return 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer i) {
+            super.onPostExecute(i);
+            if (i == -1) {
+                UtilsManager.showToast("Festival tidak ditemukan", getActivity());
+            }
+            else if (i == -2) {
+                UtilsManager.showToast("Koneksi Bermasalah", getActivity());
+            }
+            else if (i == 0) {
+                Type listOfTestObject = new TypeToken<List<Event>>(){}.getType();
+                List<Event> events = new Gson().fromJson(result, listOfTestObject);
+                Log.d(TAG, "onPostExecute: result " + result);
+                ImageSliderTitleAdapter adapter = new ImageSliderTitleAdapter(ExploreFragment.this.getContext(), events);
+                mImageSlider.setAdapter(adapter);
+                mDotsIndicator.setupWithViewPager(mImageSlider);
+            }
+        }
+    }
+
+    private class SoonFestival extends AsyncTask<String, Void, Integer> {
+
+        private String result;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            String url = Constant.GET_EVENTS + "?sortBy='date'" ;
+            Log.d(TAG, "doInBackground: url " + url);
+            Request request = new Request.Builder().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: response code " + response.code());
+                if (response.code() != 200) {
+                    return -1;
+                }
+                result = response.body().string();
+                return 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer i) {
+            super.onPostExecute(i);
+            if (i == -1) {
+                UtilsManager.showToast("Festival tidak ditemukan", getActivity());
+            }
+            else if (i == -2) {
+                UtilsManager.showToast("Koneksi Bermasalah", getActivity());
+            }
+            else if (i == 0) {
+                Type listOfTestObject = new TypeToken<List<Event>>(){}.getType();
+                List<Event> events = new Gson().fromJson(result, listOfTestObject);
+                FestivalCardAdapter festivalCardAdapter = new FestivalCardAdapter(ExploreFragment.this.getContext(), events);
+
+                mFestivalTerdekat.setLayoutManager(new LinearLayoutManager(ExploreFragment.this.getContext(), LinearLayoutManager.HORIZONTAL,false));
+                mFestivalTerdekat.setAdapter(festivalCardAdapter);
+            }
+        }
     }
 
 }

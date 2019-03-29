@@ -15,6 +15,7 @@ import com.example.festpal.model.Event;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -39,7 +40,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         Glide.with(context).load(events.get(i).getImage()).into(favoriteViewHolder.mPhotoFestival);
         favoriteViewHolder.mFestivalTitle.setText(events.get(i).getName());
         favoriteViewHolder.mFestivalPlace.setText(events.get(i).getVenue());
-        favoriteViewHolder.mFestivalDate.setText(events.get(i).getDate().toString());
+        SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy");
+
+        favoriteViewHolder.mFestivalDate.setText(df.format(events.get(i).getDate()));
     }
 
     @Override

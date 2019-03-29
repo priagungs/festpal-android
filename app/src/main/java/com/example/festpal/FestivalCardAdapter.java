@@ -10,15 +10,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.festpal.activity.DetailsFestivalTennant;
 import com.example.festpal.activity.DetailsFestivalTourist;
+import com.example.festpal.model.Event;
+import com.example.festpal.model.User;
+import com.example.festpal.utils.UtilsManager;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapter.FestCardViewHolder> {
     private Context context;
     private LayoutInflater mInflater;
-    public FestivalCardAdapter(Context context){
+    private List<Event> events;
+    private User user;
+    public FestivalCardAdapter(Context context, List<Event> events){
         this.context = context;
+        this.events = events;
         mInflater =LayoutInflater.from(context);
+        user = UtilsManager.getUser(context);
+
     }
     @NonNull
     @Override
@@ -27,14 +39,24 @@ public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FestCardViewHolder festCardViewHolder, int i) {
+    public void onBindViewHolder(@NonNull FestCardViewHolder festCardViewHolder, final int i) {
         festCardViewHolder.mFestName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsFestivalTennant.class);
+                String event = new Gson().toJson(events.get(i));
+                Intent intent;
+                if (user.getUMKM()) {
+                    intent = new Intent(context, DetailsFestivalTennant.class);
+                }
+                else {
+                    intent = new Intent(context, DetailsFestivalTourist.class);
+                }
+                intent.putExtra("EVENT", event);
                 context.startActivity(intent);
             }
         });
+        festCardViewHolder.mFestName.setText(events.get(i).getName());
+        Glide.with(context).load(events.get(i).getImage()).into(festCardViewHolder.mFestPhoto);
     }
 
     @Override
@@ -43,8 +65,8 @@ public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapte
     }
 
     public class FestCardViewHolder extends RecyclerView.ViewHolder{
-        private ImageView mFestPhoto;
-        private TextView mFestName;
+        public ImageView mFestPhoto;
+        public TextView mFestName;
         public FestCardViewHolder(@NonNull View itemView) {
             super(itemView);
             mFestName = (TextView) itemView.findViewById(R.id.festival_terdekat_name);

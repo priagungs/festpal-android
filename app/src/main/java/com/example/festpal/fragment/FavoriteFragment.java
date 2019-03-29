@@ -1,8 +1,11 @@
 package com.example.festpal.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,22 +13,34 @@ import android.view.ViewGroup;
 import com.example.festpal.FavoriteAdapter;
 import com.example.festpal.R;
 import com.example.festpal.model.Event;
+import com.example.festpal.model.User;
+import com.example.festpal.utils.Constant;
+import com.example.festpal.utils.UtilsManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class FavoriteFragment extends Fragment {
+    private static String TAG = FavoriteFragment.class.getSimpleName();
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
 //    private static final String ARG_PARAM2 = "param2";
 //
 //    private String mParam1;
 //    private String mParam2;
-    RecyclerView mFavoriteList;
+    RecyclerView recyclerView;
+    FavoriteAdapter favoriteAdapter;
     String body;
+    User user;
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -52,11 +67,61 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
-        mFavoriteList = view.findViewById(R.id.rv_items);
-        Type listOfTestObject = new TypeToken<List<Event>>(){}.getType();
-        List<Event> events = new Gson().fromJson(body, listOfTestObject);
-        FavoriteAdapter adapter = new FavoriteAdapter(events,getContext());
-        mFavoriteList.setAdapter(adapter);
+        recyclerView = view.findViewById(R.id.rv_items);
+        user = UtilsManager.getUser(getContext());
+        new FavoriteFestival().execute();
         return view;
+    }
+
+    private class FavoriteFestival extends AsyncTask<String, Void, Integer> {
+
+        private String result;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            String url = Constant.GET_EVENTS_FAVORITE_USER + user.getEmail();
+            Log.d(TAG, "doInBackground: url " + url);
+            Request request = new Request.Builder().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: response code " + response.code());
+                if (response.code() != 200) {
+                    return -1;
+                }
+                result = response.body().string();
+                return 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer i) {
+            super.onPostExecute(i);
+            if (i == -1) {
+                UtilsManager.showToast("Festival tidak ditemukan", getActivity());
+            } else if (i == -2) {
+                UtilsManager.showToast("Koneksi Bermasalah", getActivity());
+            } else if (i == 0) {
+                Type listOfTestObject = new TypeToken<List<Event>>() {
+                }.getType();
+                List<Event> events = new Gson().fromJson(result, listOfTestObject);
+                favoriteAdapter = new FavoriteAdapter(events, FavoriteFragment.this.getContext());
+                recyclerView.setAdapter(favoriteAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(FavoriteFragment.this.getContext()));
+            }
+        }
     }
 }
