@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FestivalListAdapter extends RecyclerView.Adapter<FestivalListAdapter.FestivalListViewHolder> {
-
+    private static String TAG = FestivalListAdapter.class.getSimpleName();
     private List<Event> events;
     private Context context;
 
@@ -40,6 +41,8 @@ public class FestivalListAdapter extends RecyclerView.Adapter<FestivalListAdapte
         festivalListViewHolder.setDate(events.get(i).getDate());
         festivalListViewHolder.setFestivalName(events.get(i).getName());
         festivalListViewHolder.setPictureFestival(events.get(i).getImage());
+        Log.d(TAG, "onBindViewHolder: events semua\n" + events);
+        Log.d(TAG, "onBindViewHolder: events " + events.get(i).getPricePerStands());
         festivalListViewHolder.setPrice("Rp " + events.get(i).getPricePerStands() + "/stand");
     }
 

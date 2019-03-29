@@ -39,6 +39,8 @@ public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapte
         private TextView mFestName;
         public FestCardViewHolder(@NonNull View itemView) {
             super(itemView);
+            mFestName = (TextView) itemView.findViewById(R.id.festival_terdekat_name);
+            mFestPhoto = (ImageView) itemView.findViewById(R.id.festival_terdekat_photo);
         }
     }
 }
