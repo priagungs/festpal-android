@@ -7,20 +7,22 @@
     tools:context=".fragment.BookedFragment">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/greydarktransparent">
         <include
             android:id="@+id/search_bar"
             layout="@layout/item_search_bar_noback"
             />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Booked"
-
-            app:layout_constraintTop_toBottomOf="@+id/search_bar"
-            tools:layout_editor_absoluteX="0dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_items"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_bar" />
     </android.support.constraint.ConstraintLayout>
-    <!-- TODO: Update blank fragment layout -->
+
 
 </FrameLayout>
