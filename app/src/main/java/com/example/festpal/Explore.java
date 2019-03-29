@@ -11,11 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 public class Explore extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
 //    private static final String ARG_PARAM2 = "param2";
+
+    private EditText etSearch;
+    private ImageView btnSearch;
+    private ImageView btnBack;
 //
 //    private String mParam1;
 //    private String mParam2;
@@ -57,6 +63,8 @@ public class Explore extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
+        etSearch = view.findViewById(R.id.et_search);
+        btnSearch = view.findViewById(R.id.btn_search);
         mImageSlider = (ViewPager) view.findViewById(R.id.image_slider);
         mDotsIndicator = (TabLayout) view.findViewById(R.id.tabDots);
         mFestivalTerdekat = (RecyclerView) view.findViewById(R.id.festival_terdekat);
