@@ -182,9 +182,9 @@ public class LoginActivity extends AppCompatActivity {
             else {
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 Log.d(TAG, "onPostExecute: body " + body);
-                User user = gson.fromJson(body, User.class);
-                user.setPicture(user.getPicture());
-                UtilsManager.saveUser(LoginActivity.this, user);
+                User usr = gson.fromJson(body, User.class);
+                usr.setPicture(user.getPhotoUrl().toString());
+                UtilsManager.saveUser(LoginActivity.this, usr);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
