@@ -9,14 +9,17 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.festpal.adapter.ViewPagerAdapter;
+import com.example.festpal.fragment.BookedFragment;
+import com.example.festpal.fragment.ExploreFragment;
+import com.example.festpal.fragment.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     private CustomViewPager viewPager;
     private TextView mTextMessage;
     private MenuItem prevMenuItem;
-    private Booked bookedFragment;
-    private Explore exploreFragment;
-    private Profile profileFragment;
+    private BookedFragment bookedFragment;
+    private ExploreFragment exploreFragment;
+    private ProfileFragment profileFragment;
     BottomNavigationView navigation;
     private boolean isTourist = true;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
