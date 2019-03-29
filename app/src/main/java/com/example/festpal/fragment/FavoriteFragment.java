@@ -1,15 +1,15 @@
-package com.example.festpal;
+package com.example.festpal.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.festpal.R;
 
-public class Booked extends Fragment {
+
+public class FavoriteFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
 //    private static final String ARG_PARAM2 = "param2";
@@ -18,12 +18,12 @@ public class Booked extends Fragment {
 //    private String mParam2;
 
 
-    public Booked() {
+    public FavoriteFragment() {
         // Required empty public constructor
     }
 
-//    public static Booked newInstance(String param1, String param2) {
-//        Booked fragment = new Booked();
+//    public static BookedFragment newInstance(String param1, String param2) {
+//        BookedFragment fragment = new BookedFragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -44,6 +44,6 @@ public class Booked extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_booked, container, false);
+        return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
 }

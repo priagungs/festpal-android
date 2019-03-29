@@ -39,7 +39,7 @@ public class Event {
     @Expose
     Integer availableStands;
 
-    @SerializedName("pricePerStands")
+    @SerializedName("pricePerStand")
     @Expose
     Long pricePerStands;
 

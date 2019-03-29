@@ -1,5 +1,6 @@
 package com.example.festpal.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -10,6 +11,7 @@ import java.util.List;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     public ViewPagerAdapter(FragmentManager fm) {
+
         super(fm);
     }
 
