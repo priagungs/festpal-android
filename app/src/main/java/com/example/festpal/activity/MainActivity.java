@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onPostExecute: result " + result);
                 listFestivalFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, listFestivalFragment).addToBackStack(null).commit();
-//                viewPagerAdapter.notifyDataSetChanged();
             }
         }
     }

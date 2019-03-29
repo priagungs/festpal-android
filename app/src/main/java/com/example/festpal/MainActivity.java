@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.festpal.adapter.ViewPagerAdapter;
 import com.example.festpal.fragment.BookedFragment;
 import com.example.festpal.fragment.ExploreFragment;
+import com.example.festpal.fragment.FavoriteFragment;
 import com.example.festpal.fragment.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,14 +69,14 @@ public class MainActivity extends AppCompatActivity {
     };
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        exploreFragment = new Explore();
-        bookedFragment = new Booked();
-        profileFragment = new Profile();
-        viewPagerAdapter.addFragment(new Explore());
+        exploreFragment = new ExploreFragment();
+        bookedFragment = new BookedFragment();
+        profileFragment = new ProfileFragment();
+        viewPagerAdapter.addFragment(new ExploreFragment());
         if(isTourist){
-            viewPagerAdapter.addFragment(new Favorite());
+            viewPagerAdapter.addFragment(new FavoriteFragment());
         }else{
-            viewPagerAdapter.addFragment(new Booked());
+            viewPagerAdapter.addFragment(new BookedFragment());
         }
         viewPagerAdapter.addFragment(profileFragment);
         viewPager.setAdapter(viewPagerAdapter);

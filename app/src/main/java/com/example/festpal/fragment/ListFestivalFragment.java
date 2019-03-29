@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.festpal.R;
 import com.example.festpal.adapter.FestivalListAdapter;
@@ -23,6 +25,9 @@ public class ListFestivalFragment extends Fragment {
 
     private static String TAG = ListFestivalFragment.class.getSimpleName();
     private RecyclerView rvItems;
+    private ImageView btnBack;
+    private ImageView btnSearch;
+    private EditText etSearch;
     private String body;
 
 
@@ -64,6 +69,19 @@ public class ListFestivalFragment extends Fragment {
         FestivalListAdapter adapter = new FestivalListAdapter(events, getContext());
         rvItems.setAdapter(adapter);
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        btnBack = view.findViewById(R.id.btn_back);
+        btnSearch = view.findViewById(R.id.btn_search);
+        etSearch = view.findViewById(R.id.et_search);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ExploreFragment exploreFragment = new ExploreFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, exploreFragment).commit();
+            }
+        });
+
         return view;
 
     }

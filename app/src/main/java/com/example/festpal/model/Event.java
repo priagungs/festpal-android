@@ -39,9 +39,9 @@ public class Event {
     @Expose
     Integer availableStands;
 
-    @SerializedName("pricePerStands")
+    @SerializedName("pricePerStand")
     @Expose
-    Integer pricePerStands;
+    Long pricePerStands;
 
     @SerializedName("favoritedCount")
     @Expose
@@ -111,11 +111,11 @@ public class Event {
         this.availableStands = availableStands;
     }
 
-    public Integer getPricePerStands() {
+    public Long getPricePerStands() {
         return pricePerStands;
     }
 
-    public void setPricePerStands(Integer pricePerStands) {
+    public void setPricePerStands(Long pricePerStands) {
         this.pricePerStands = pricePerStands;
     }
 
