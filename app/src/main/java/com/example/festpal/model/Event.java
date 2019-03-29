@@ -1,0 +1,115 @@
+package com.example.festpal.model;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class Event {
+
+    @SerializedName("name")
+    @Expose
+    String name;
+
+    @SerializedName("date")
+    @Expose
+    String date;
+
+    @SerializedName("venue")
+    @Expose
+    String venue;
+
+    @SerializedName("desc")
+    @Expose
+    String description;
+
+    @SerializedName("image")
+    @Expose
+    String image;
+
+    @SerializedName("standCapacity")
+    @Expose
+    Integer standCapacity;
+
+    @SerializedName("availableStands")
+    @Expose
+    Integer availableStands;
+
+    @SerializedName("pricePerStands")
+    @Expose
+    Long pricePerStands;
+
+    @SerializedName("favoritedCount")
+    @Expose
+    Integer favoritedCount;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getStandCapacity() {
+        return standCapacity;
+    }
+
+    public void setStandCapacity(Integer standCapacity) {
+        this.standCapacity = standCapacity;
+    }
+
+    public Integer getAvailableStands() {
+        return availableStands;
+    }
+
+    public void setAvailableStands(Integer availableStands) {
+        this.availableStands = availableStands;
+    }
+
+    public Long getPricePerStands() {
+        return pricePerStands;
+    }
+
+    public void setPricePerStands(Long pricePerStands) {
+        this.pricePerStands = pricePerStands;
+    }
+
+    public Integer getFavoritedCount() {
+        return favoritedCount;
+    }
+
+    public void setFavoritedCount(Integer favoritedCount) {
+        this.favoritedCount = favoritedCount;
+    }
+}
