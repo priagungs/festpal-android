@@ -5,11 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class User {
-
-    @SerializedName("_id")
-    @Expose
-    String id;
+public class UserRequest {
 
     @SerializedName("name")
     @Expose
@@ -31,35 +27,17 @@ public class User {
     @Expose
     Boolean isUMKM;
 
-    @SerializedName("business")
+    @SerializedName("businessName")
     @Expose
-    Business business;
+    String businessName;
 
-    @SerializedName("bookedStands")
+    @SerializedName("businessSector")
     @Expose
-    List<String> bookedStands;
+    String businessSector;
 
-    @SerializedName("favoriteFestivals")
+    @SerializedName("businessDesc")
     @Expose
-    List<String> favoriteFestivals;
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    String picture;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    String businessDesc;
 
     public String getName() {
         return name;
@@ -101,27 +79,27 @@ public class User {
         isUMKM = UMKM;
     }
 
-    public Business getBusiness() {
-        return business;
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public void setBusiness(Business business) {
-        this.business = business;
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
-    public List<String> getBookedStands() {
-        return bookedStands;
+    public String getBusinessSector() {
+        return businessSector;
     }
 
-    public void setBookedStands(List<String> bookedStands) {
-        this.bookedStands = bookedStands;
+    public void setBusinessSector(String businessSector) {
+        this.businessSector = businessSector;
     }
 
-    public List<String> getFavoriteFestivals() {
-        return favoriteFestivals;
+    public String getBusinessDesc() {
+        return businessDesc;
     }
 
-    public void setFavoriteFestivals(List<String> favoriteFestivals) {
-        this.favoriteFestivals = favoriteFestivals;
+    public void setBusinessDesc(String businessDesc) {
+        this.businessDesc = businessDesc;
     }
 }
