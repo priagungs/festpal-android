@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "190455041470",
+    "firebase_url": "https://festpal-android-5855c.firebaseio.com",
+    "project_id": "festpal-android-5855c",
+    "storage_bucket": "festpal-android-5855c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190455041470:android:33c0c9e309757cd6",
+        "android_client_info": {
+          "package_name": "com.example.festpal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190455041470-ch63vficgbh94i391v6dh1hkai1f0n7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.festpal",
+            "certificate_hash": "7adf12ffc9a7b062a073f96cac05d0caa43926f9"
+          }
+        },
+        {
+          "client_id": "190455041470-707qv3daqgrgvsisrav2ladq1jb3kk32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFZJ3FfFSo1bxiPnq5gxj1fYsjNRWNQnY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190455041470-707qv3daqgrgvsisrav2ladq1jb3kk32.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
