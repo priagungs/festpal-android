@@ -1,34 +1,40 @@
-package com.example.festpal;
+package com.example.festpal.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-public class Explore extends Fragment {
+import com.example.festpal.FestivalCardAdapter;
+import com.example.festpal.ImageSliderAdapter;
+import com.example.festpal.R;
+import com.example.festpal.activity.MainActivity;
+
+public class ExploreFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
 //    private static final String ARG_PARAM2 = "param2";
 
+    private static String TAG = ExploreFragment.class.getSimpleName();
+
     private EditText etSearch;
     private ImageView btnSearch;
-    private ImageView btnBack;
 //
 //    private String mParam1;
 //    private String mParam2;
     private ViewPager mImageSlider;
     private TabLayout mDotsIndicator;
     private RecyclerView mFestivalTerdekat;
-    public Explore() {
+    public ExploreFragment() {
         // Required empty public constructor
     }
 
@@ -38,10 +44,10 @@ public class Explore extends Fragment {
 //     *
 //     * @param param1 Parameter 1.
 //     * @param param2 Parameter 2.
-//     * @return A new instance of fragment Explore.
+//     * @return A new instance of fragment ExploreFragment.
 //     */
-//    public static Explore newInstance(String param1, String param2) {
-//        Explore fragment = new Explore();
+//    public static ExploreFragment newInstance(String param1, String param2) {
+//        ExploreFragment fragment = new ExploreFragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -74,6 +80,31 @@ public class Explore extends Fragment {
         mFestivalTerdekat.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
         mFestivalTerdekat.setAdapter(festivalCardAdapter);
         mDotsIndicator.setupWithViewPager(mImageSlider);
+        initializeListener();
         return view;
     }
+
+    private void initializeListener() {
+        etSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER) && etSearch.getText().length() > 0) {
+                    ((MainActivity) getActivity()).searchFestival(etSearch.getText().toString());
+                }
+                return false;
+            }
+        });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: clickedddd");
+                if (etSearch.getText().length() > 0) {
+                    ((MainActivity) getActivity()).searchFestival(etSearch.getText().toString());
+                }
+            }
+        });
+    }
+
 }
