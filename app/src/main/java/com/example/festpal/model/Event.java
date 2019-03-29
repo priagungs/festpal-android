@@ -3,7 +3,13 @@ package com.example.festpal.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Event {
+
+    @SerializedName("_id")
+    @Expose
+    String id;
 
     @SerializedName("name")
     @Expose
@@ -11,7 +17,7 @@ public class Event {
 
     @SerializedName("date")
     @Expose
-    String date;
+    Date date;
 
     @SerializedName("venue")
     @Expose
@@ -41,6 +47,14 @@ public class Event {
     @Expose
     Integer favoritedCount;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -49,11 +63,11 @@ public class Event {
         this.name = name;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

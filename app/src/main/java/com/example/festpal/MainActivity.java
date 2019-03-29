@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.festpal.adapter.ViewPagerAdapter;
+
 public class MainActivity extends AppCompatActivity {
     private CustomViewPager viewPager;
     private TextView mTextMessage;

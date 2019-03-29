@@ -1,4 +1,4 @@
-package com.example.festpal;
+package com.example.festpal.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,5 +24,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
     public void addFragment(Fragment fragment) {
         mFragmentList.add(fragment);
+    }
+    public void setFragment (Fragment fragment, int index) {
+        mFragmentList.set(index, fragment);
     }
 }
