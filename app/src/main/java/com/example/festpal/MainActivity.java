@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private Explore exploreFragment;
     private Profile profileFragment;
     BottomNavigationView navigation;
+    private boolean isTourist = false;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_profile:
                     viewPager.setCurrentItem(2);
+                    return true;
+                case R.id.navigation_favourite:
+                    viewPager.setCurrentItem(1);
                     return true;
             }
             return false;
@@ -63,7 +67,11 @@ public class MainActivity extends AppCompatActivity {
         bookedFragment = new Booked();
         profileFragment = new Profile();
         viewPagerAdapter.addFragment(exploreFragment);
-        viewPagerAdapter.addFragment(bookedFragment);
+        if(isTourist){
+            viewPagerAdapter.addFragment(bookedFragment);
+        }else{
+            viewPagerAdapter.addFragment(new Favorite());
+        }
         viewPagerAdapter.addFragment(profileFragment);
         viewPager.setAdapter(viewPagerAdapter);
     }
@@ -75,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPagingEnabled(false);
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        if(isTourist){
+            navigation.inflateMenu(R.menu.navigation_tourist);
+        }else{
+            navigation.inflateMenu(R.menu.navigation);
+        }
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         viewPager.addOnPageChangeListener(mViewPagerChangeListener);
         setupViewPager(viewPager);
