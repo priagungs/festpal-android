@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private Explore exploreFragment;
     private Profile profileFragment;
     BottomNavigationView navigation;
-    private boolean isTourist = false;
+    private boolean isTourist = true;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         exploreFragment = new Explore();
         bookedFragment = new Booked();
         profileFragment = new Profile();
-        viewPagerAdapter.addFragment(exploreFragment);
+        viewPagerAdapter.addFragment(new Explore());
         if(isTourist){
-            viewPagerAdapter.addFragment(bookedFragment);
-        }else{
             viewPagerAdapter.addFragment(new Favorite());
+        }else{
+            viewPagerAdapter.addFragment(new Booked());
         }
         viewPagerAdapter.addFragment(profileFragment);
         viewPager.setAdapter(viewPagerAdapter);
