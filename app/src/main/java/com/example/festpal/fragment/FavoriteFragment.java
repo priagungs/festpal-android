@@ -73,6 +73,12 @@ public class FavoriteFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        new FavoriteFestival().execute();
+    }
+
     private class FavoriteFestival extends AsyncTask<String, Void, Integer> {
 
         private String result;
