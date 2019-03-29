@@ -7,4 +7,5 @@
     <color name="grey">#F4F4F4</color>
     <color name="greydark">#E4E4E4</color>
     <color name="greydarktransparent">#80E4E4E4</color>
+    <color name="greySemi">#F4F4F4</color>
 </resources>
