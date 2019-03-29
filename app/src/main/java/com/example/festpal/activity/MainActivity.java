@@ -190,5 +190,61 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    private class FavoriteFestival extends AsyncTask<String, Void, Integer> {
 
+        private String result;
+        private String query;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingDialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            String url = Constant.GET_EVENTS + query;
+            Log.d(TAG, "doInBackground: url " + url);
+            Request request = new Request.Builder().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: response code " + response.code());
+                if (response.code() != 200) {
+                    return -1;
+                }
+                result = response.body().string();
+                return 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer i) {
+            super.onPostExecute(i);
+            loadingDialog.dismiss();
+            if (i == -1) {
+                UtilsManager.showToast("Festival tidak ditemukan", MainActivity.this);
+            }
+            else if (i == -2) {
+                UtilsManager.showToast("Koneksi Bermasalah", MainActivity.this);
+            }
+            else if (i == 0) {
+                ListFestivalFragment listFestivalFragment = new ListFestivalFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("EVENTS", result);
+                bundle.putString("QUERY", query);
+                Log.d(TAG, "onPostExecute: result " + result);
+                listFestivalFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, listFestivalFragment).addToBackStack(null).commit();
+            }
+        }
+    }
 }
