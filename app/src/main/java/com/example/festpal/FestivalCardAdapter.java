@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.festpal.activity.DetailsFestivalTennant;
 import com.example.festpal.activity.DetailsFestivalTourist;
 
 public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapter.FestCardViewHolder> {
@@ -30,7 +31,7 @@ public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapte
         festCardViewHolder.mFestName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsFestivalTourist.class);
+                Intent intent = new Intent(context, DetailsFestivalTennant.class);
                 context.startActivity(intent);
             }
         });

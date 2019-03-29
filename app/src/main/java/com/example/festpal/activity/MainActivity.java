@@ -21,6 +21,7 @@ import com.example.festpal.R;
 import com.example.festpal.adapter.ViewPagerAdapter;
 import com.example.festpal.fragment.RootFragment;
 import com.example.festpal.model.Event;
+import com.example.festpal.model.User;
 import com.example.festpal.utils.Constant;
 import com.example.festpal.utils.UtilsManager;
 import com.google.gson.Gson;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private RootFragment rootFragment;
     private ProfileFragment profileFragment;
     BottomNavigationView navigation;
+    private User activeUser;
     private boolean isTourist = false;
     private ViewPagerAdapter viewPagerAdapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadingDialog = new LoadingDialog(this);
-
+        activeUser = UtilsManager.getUser(this);
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setPagingEnabled(false);
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -190,5 +192,58 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    private class FavoriteFestival extends AsyncTask<String, Void, Integer> {
 
+        private String result;
+        private String query;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingDialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            String url = Constant.GET_EVENTS_FAVORITE_USER + activeUser.getEmail();
+            Log.d(TAG, "doInBackground: url " + url);
+            Request request = new Request.Builder().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: response code " + response.code());
+                if (response.code() != 200) {
+                    return -1;
+                }
+                result = response.body().string();
+                return 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer i) {
+            super.onPostExecute(i);
+            loadingDialog.dismiss();
+            if (i == -1) {
+                UtilsManager.showToast("Festival tidak ditemukan", MainActivity.this);
+            }
+            else if (i == -2) {
+                UtilsManager.showToast("Koneksi Bermasalah", MainActivity.this);
+            }
+            else if (i == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putString("EVENTS", result);
+                Log.d(TAG, "onPostExecute: result " + result);
+//                getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, listFestivalFragment).addToBackStack(null).commit();
+            }
+        }
+    }
 }
