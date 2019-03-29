@@ -2,11 +2,19 @@ package com.example.festpal.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.festpal.FavoriteAdapter;
 import com.example.festpal.R;
+import com.example.festpal.model.Event;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 
 public class FavoriteFragment extends Fragment {
@@ -16,7 +24,8 @@ public class FavoriteFragment extends Fragment {
 //
 //    private String mParam1;
 //    private String mParam2;
-
+    RecyclerView mFavoriteList;
+    String body;
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -34,16 +43,20 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+        if (getArguments() != null) {
+            body = getArguments().getString("EVENTS");
+        }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+        mFavoriteList = view.findViewById(R.id.rv_items);
+        Type listOfTestObject = new TypeToken<List<Event>>(){}.getType();
+        List<Event> events = new Gson().fromJson(body, listOfTestObject);
+        FavoriteAdapter adapter = new FavoriteAdapter(events,getContext());
+        mFavoriteList.setAdapter(adapter);
+        return view;
     }
 }
