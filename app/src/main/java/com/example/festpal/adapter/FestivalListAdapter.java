@@ -1,6 +1,7 @@
 package com.example.festpal.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.festpal.R;
+import com.example.festpal.activity.DetailsFestivalTennant;
+import com.example.festpal.activity.DetailsFestivalTourist;
 import com.example.festpal.model.Event;
+import com.example.festpal.model.User;
+import com.example.festpal.utils.UtilsManager;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,13 +48,30 @@ public class FestivalListAdapter extends RecyclerView.Adapter<FestivalListAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FestivalListViewHolder festivalListViewHolder, int i) {
+    public void onBindViewHolder(@NonNull FestivalListViewHolder festivalListViewHolder, final int i) {
         festivalListViewHolder.setDate(events.get(i).getDate());
         festivalListViewHolder.setFestivalName(events.get(i).getName());
         festivalListViewHolder.setPictureFestival(events.get(i).getImage());
         Log.d(TAG, "onBindViewHolder: events semua\n" + events);
         Log.d(TAG, "onBindViewHolder: events " + events.get(i).getPricePerStands());
         festivalListViewHolder.setPrice("Rp " + events.get(i).getPricePerStands() + "/stand");
+        festivalListViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String event = new Gson().toJson(events.get(i));
+                User user = UtilsManager.getUser(context);
+                Intent intent;
+
+                if (user.getUMKM()) {
+                    intent = new Intent(context, DetailsFestivalTennant.class);
+                }
+                else {
+                    intent = new Intent(context, DetailsFestivalTourist.class);
+                }
+                intent.putExtra("EVENT", event);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -62,6 +85,7 @@ public class FestivalListAdapter extends RecyclerView.Adapter<FestivalListAdapte
         TextView tvFestivalName;
         TextView tvDate;
         TextView tvPrice;
+        public View itemView;
 
         public void setPictureFestival(String url) {
             Glide.with(context).load(url).into(ivFestival);
@@ -82,6 +106,7 @@ public class FestivalListAdapter extends RecyclerView.Adapter<FestivalListAdapte
 
         public FestivalListViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.itemView = itemView;
             ivFestival = itemView.findViewById(R.id.iv_festival);
             tvFestivalName = itemView.findViewById(R.id.tv_festival_name);
             tvDate = itemView.findViewById(R.id.tv_date);

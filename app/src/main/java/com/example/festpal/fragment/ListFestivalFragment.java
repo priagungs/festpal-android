@@ -143,7 +143,7 @@ public class ListFestivalFragment extends Fragment {
                     .readTimeout(30, TimeUnit.SECONDS)
                     .build();
 
-            String url = Constant.GET_EVENTS + query;
+            String url = Constant.GET_EVENTS + "/" + query;
             Log.d(TAG, "doInBackground: url " + url);
             Request request = new Request.Builder().url(url).build();
             try {

@@ -32,6 +32,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/tv_favorite"
                     android:layout_alignParentRight="true"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -65,11 +66,12 @@
                     android:id="@+id/title_section_terdekat"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Paling Favorit"
+                    android:text="Dalam Waktu Dekat"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/tv_soon"
                     android:layout_alignParentRight="true"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.festpal.FestivalCardAdapter;
 import com.example.festpal.ImageSliderAdapter;
@@ -29,6 +30,8 @@ public class ExploreFragment extends Fragment {
 
     private EditText etSearch;
     private ImageView btnSearch;
+    private TextView tvFavorite;
+    private TextView tvSoon;
 //
 //    private String mParam1;
 //    private String mParam2;
@@ -81,6 +84,10 @@ public class ExploreFragment extends Fragment {
         mFestivalTerdekat.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
         mFestivalTerdekat.setAdapter(festivalCardAdapter);
         mDotsIndicator.setupWithViewPager(mImageSlider);
+
+        tvFavorite = view.findViewById(R.id.tv_favorite);
+        tvSoon = view.findViewById(R.id.tv_soon);
+
         initializeListener();
         return view;
     }
@@ -104,6 +111,20 @@ public class ExploreFragment extends Fragment {
                 if (etSearch.getText().length() > 0) {
                     ((MainActivity) getActivity()).searchFestival(etSearch.getText().toString());
                 }
+            }
+        });
+
+        tvFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).getFavoriteFestival();
+            }
+        });
+
+        tvSoon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).getSoonFestival();
             }
         });
     }

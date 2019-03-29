@@ -22,6 +22,7 @@ public class DetailsFestivalTennant extends AppCompatActivity {
     private Activity activity = this;
     private Button mPayment;
     private ImageView mBackButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +36,7 @@ public class DetailsFestivalTennant extends AppCompatActivity {
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =  new Intent(activity , MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         mPayment.setOnClickListener(new View.OnClickListener() {

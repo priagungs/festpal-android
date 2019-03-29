@@ -101,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
         bookedFragment = new BookedFragment();
         profileFragment = new ProfileFragment();
         viewPagerAdapter.addFragment(rootFragment);
-        if(isTourist){
+        User user = UtilsManager.getUser(this);
+        if(!user.getUMKM()){
             viewPagerAdapter.addFragment(bookedFragment);
         }else{
             viewPagerAdapter.addFragment(new FavoriteFragment());
@@ -120,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPagingEnabled(false);
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        if(isTourist){
+        User user = UtilsManager.getUser(this);
+        if(!user.getUMKM()){
             navigation.inflateMenu(R.menu.navigation_tourist);
         }else{
             navigation.inflateMenu(R.menu.navigation);
@@ -132,6 +134,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchFestival(String query) {
         new SearchFestival().execute(query);
+    }
+
+    public void getFavoriteFestival() {
+        new FavoriteFestival().execute();
+    }
+
+    public void getSoonFestival() {
+        new SoonFestival().execute();
     }
 
     private class SearchFestival extends AsyncTask<String, Void, Integer> {
@@ -154,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     .readTimeout(30, TimeUnit.SECONDS)
                     .build();
 
-            String url = Constant.GET_EVENTS + query;
+            String url = Constant.GET_EVENTS + "/" + query;
             Log.d(TAG, "doInBackground: url " + url);
             Request request = new Request.Builder().url(url).build();
             try {
@@ -195,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
     private class FavoriteFestival extends AsyncTask<String, Void, Integer> {
 
         private String result;
-        private String query;
 
         @Override
         protected void onPreExecute() {
@@ -211,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     .readTimeout(30, TimeUnit.SECONDS)
                     .build();
 
-            String url = Constant.GET_EVENTS_FAVORITE_USER + activeUser.getEmail();
+            String url = Constant.GET_EVENTS + "?sortBy='favorite'" ;
             Log.d(TAG, "doInBackground: url " + url);
             Request request = new Request.Builder().url(url).build();
             try {
@@ -239,10 +248,70 @@ public class MainActivity extends AppCompatActivity {
                 UtilsManager.showToast("Koneksi Bermasalah", MainActivity.this);
             }
             else if (i == 0) {
+                ListFestivalFragment listFestivalFragment = new ListFestivalFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("EVENTS", result);
+                bundle.putString("QUERY", "");
+                listFestivalFragment.setArguments(bundle);
                 Log.d(TAG, "onPostExecute: result " + result);
-//                getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, listFestivalFragment).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, listFestivalFragment).addToBackStack(null).commit();
+            }
+        }
+    }
+
+    private class SoonFestival extends AsyncTask<String, Void, Integer> {
+
+        private String result;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingDialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            String url = Constant.GET_EVENTS + "?sortBy='date'" ;
+            Log.d(TAG, "doInBackground: url " + url);
+            Request request = new Request.Builder().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: response code " + response.code());
+                if (response.code() != 200) {
+                    return -1;
+                }
+                result = response.body().string();
+                return 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer i) {
+            super.onPostExecute(i);
+            loadingDialog.dismiss();
+            if (i == -1) {
+                UtilsManager.showToast("Festival tidak ditemukan", MainActivity.this);
+            }
+            else if (i == -2) {
+                UtilsManager.showToast("Koneksi Bermasalah", MainActivity.this);
+            }
+            else if (i == 0) {
+                ListFestivalFragment listFestivalFragment = new ListFestivalFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("EVENTS", result);
+                bundle.putString("QUERY", "");
+                listFestivalFragment.setArguments(bundle);
+                Log.d(TAG, "onPostExecute: result " + result);
+                getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, listFestivalFragment).addToBackStack(null).commit();
             }
         }
     }
