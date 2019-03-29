@@ -21,6 +21,11 @@ import java.util.List;
 
 public class FestivalListAdapter extends RecyclerView.Adapter<FestivalListAdapter.FestivalListViewHolder> {
     private static String TAG = FestivalListAdapter.class.getSimpleName();
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
     private List<Event> events;
     private Context context;
 
