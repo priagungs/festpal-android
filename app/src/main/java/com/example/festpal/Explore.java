@@ -3,7 +3,11 @@ package com.example.festpal;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +25,9 @@ public class Explore extends Fragment {
 //
 //    private String mParam1;
 //    private String mParam2;
-
-
+    private ViewPager mImageSlider;
+    private TabLayout mDotsIndicator;
+    private RecyclerView mFestivalTerdekat;
     public Explore() {
         // Required empty public constructor
     }
@@ -60,7 +65,15 @@ public class Explore extends Fragment {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         etSearch = view.findViewById(R.id.et_search);
         btnSearch = view.findViewById(R.id.btn_search);
-
+        mImageSlider = (ViewPager) view.findViewById(R.id.image_slider);
+        mDotsIndicator = (TabLayout) view.findViewById(R.id.tabDots);
+        mFestivalTerdekat = (RecyclerView) view.findViewById(R.id.festival_terdekat);
+        FestivalCardAdapter festivalCardAdapter = new FestivalCardAdapter(this.getContext());
+        ImageSliderAdapter adapter = new ImageSliderAdapter(this.getContext());
+        mImageSlider.setAdapter(adapter);
+        mFestivalTerdekat.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
+        mFestivalTerdekat.setAdapter(festivalCardAdapter);
+        mDotsIndicator.setupWithViewPager(mImageSlider);
         return view;
     }
 }

@@ -3,12 +3,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Explore">
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <include
             layout="@layout/item_search_bar_noback"
             />
-    </android.support.constraint.ConstraintLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/white">
+                    <TextView
+                        android:id="@+id/title_favorit_section"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Paling Favorit"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Selengkapnya"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_alignParentRight="true"/>
+                    <android.support.v4.view.ViewPager
+                        android:layout_marginVertical="8dp"
+                        android:id="@+id/image_slider"
+                        android:layout_below="@id/title_favorit_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        />
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tabDots"
+                        android:layout_below="@id/image_slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white"
+                    android:padding="16dp">
+                    <TextView
+                        android:id="@+id/title_section_terdekat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Paling Favorit"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Selengkapnya"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_alignParentRight="true"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/festival_terdekat"
+                        android:layout_below="@id/title_section_terdekat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </FrameLayout>
