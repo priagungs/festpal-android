@@ -77,12 +77,23 @@ public class RegisterActivity extends AppCompatActivity {
                 else if (idRadio == R.id.rbUmkm) {
                     isUMKM = true;
                 }
-                if (name.isEmpty() || address.isEmpty() || phone.isEmpty() || businessName.isEmpty() || businessSector.isEmpty()
-                    || description.isEmpty() || isUMKM == null) {
+
+                Boolean invalid;
+                if (isUMKM != null && isUMKM) {
+                    invalid = name.isEmpty() || address.isEmpty() || phone.isEmpty() || businessName.isEmpty() || businessSector.isEmpty()
+                            || description.isEmpty();
+                }
+                else if (isUMKM != null && !isUMKM) {
+                    invalid = name.isEmpty() || address.isEmpty() || phone.isEmpty();
+                }
+                else {
+                    invalid = true;
+                }
+                if (invalid) {
                     UtilsManager.showToast("Semua bagian harus terisi", RegisterActivity.this);
                 }
                 else {
-                    new RegisterUser(name, address, phone, businessName, businessSector, description, isUMKM, email);
+                    new RegisterUser(name, address, phone, businessName, businessSector, description, isUMKM, email).execute();
                     Log.d(TAG, "onClick: name, address, phone, businessName, businessSector, description, isUMKM, email\n" + name+ " " + address+ " " + phone+ " " + businessName + " " + businessSector + " " + description + " " +isUMKM + " " +email);
                 }
             }
@@ -150,6 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 body = response.body().string();
                 Log.d(TAG, "doInBackground: body " + body);
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
             }

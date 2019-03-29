@@ -1,14 +1,23 @@
 package com.example.festpal.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.festpal.R;
+import com.example.festpal.activity.LoginActivity;
+import com.example.festpal.model.User;
+import com.example.festpal.utils.UtilsManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class ProfileFragment extends Fragment {
@@ -19,6 +28,7 @@ public class ProfileFragment extends Fragment {
 //    private String mParam1;
 //    private String mParam2;
 
+    LinearLayout linlayLogout;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -50,6 +60,27 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        linlayLogout = view.findViewById(R.id.profile_logout);
+        linlayLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.google_client_id))
+                        .requestEmail()
+                        .build();
+                GoogleSignInClient client = GoogleSignIn.getClient(getContext(), gso);
+                client.signOut();
+                UtilsManager.clearAllDataUser(getContext());
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        User user = UtilsManager.getUser(getContext());
+
+        return view;
     }
 }
