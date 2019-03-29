@@ -3,7 +3,9 @@ package com.example.festpal;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,8 @@ public class Explore extends Fragment {
 //
 //    private String mParam1;
 //    private String mParam2;
-
-
+    private ViewPager mImageSlider;
+    private TabLayout mDotsIndicator;
     public Explore() {
         // Required empty public constructor
     }
@@ -51,6 +53,14 @@ public class Explore extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore, container, false);
+        View view = inflater.inflate(R.layout.fragment_explore, container, false);
+        mImageSlider = (ViewPager) view.findViewById(R.id.image_slider);
+        mDotsIndicator = (TabLayout) view.findViewById(R.id.tabDots);
+        ImageSliderAdapter adapter = new ImageSliderAdapter(this.getContext());
+        mImageSlider.setAdapter(adapter);
+        mDotsIndicator.setupWithViewPager(mImageSlider);
+        return view;
+
+
     }
 }
