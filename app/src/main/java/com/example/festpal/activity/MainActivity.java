@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.festpal.dialog.LoadingDialog;
 import com.example.festpal.fragment.BookedFragment;
 import com.example.festpal.CustomViewPager;
 import com.example.festpal.fragment.ExploreFragment;
@@ -36,6 +37,9 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static String TAG = MainActivity.class.getSimpleName();
+
+    LoadingDialog loadingDialog;
+
     private CustomViewPager viewPager;
     private TextView mTextMessage;
     private MenuItem prevMenuItem;
@@ -107,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadingDialog = new LoadingDialog(this);
+
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setPagingEnabled(false);
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -128,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
     private class SearchFestival extends AsyncTask<String, Void, Integer> {
 
         private String result;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingDialog.show();
+        }
 
         @Override
         protected Integer doInBackground(String... strings) {
@@ -158,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer i) {
             super.onPostExecute(i);
+            loadingDialog.dismiss();
             if (i == -1) {
                 UtilsManager.showToast("Festival tidak ditemukan", MainActivity.this);
             }
