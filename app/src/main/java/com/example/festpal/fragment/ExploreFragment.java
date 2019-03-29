@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.example.festpal.FestivalCardAdapter;
 import com.example.festpal.ImageSliderAdapter;
+import com.example.festpal.ImageSliderTitleAdapter;
 import com.example.festpal.R;
 import com.example.festpal.activity.MainActivity;
 
