@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private static final String TAG = RegisterActivity.class.getSimpleName();
 
     EditText etName;
     EditText etAddress;
@@ -79,7 +82,8 @@ public class RegisterActivity extends AppCompatActivity {
                     UtilsManager.showToast("Semua bagian harus terisi", RegisterActivity.this);
                 }
                 else {
-
+                    new RegisterUser(name, address, phone, businessName, businessSector, description, isUMKM, email);
+                    Log.d(TAG, "onClick: name, address, phone, businessName, businessSector, description, isUMKM, email\n" + name+ " " + address+ " " + phone+ " " + businessName + " " + businessSector + " " + description + " " +isUMKM + " " +email);
                 }
             }
         });
@@ -134,15 +138,18 @@ public class RegisterActivity extends AppCompatActivity {
             userRequest.setUMKM(isUMKM);
 
             String json = new Gson().toJson(userRequest);
+            Log.d(TAG, "doInBackground: json");
             MediaType mediaType = MediaType.parse("application/json");
             RequestBody requestBody = RequestBody.create(mediaType, json);
             Request request = new Request.Builder().url(url).post(requestBody).build();
             try {
                 Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: status code " + response.code());
                 if (response.code() != 200) {
                     return false;
                 }
-
+                body = response.body().string();
+                Log.d(TAG, "doInBackground: body " + body);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -152,7 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            
+            loadingDialog.dismiss();
             if (aBoolean) {
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 User user = gson.fromJson(body, User.class);
@@ -160,6 +167,9 @@ public class RegisterActivity extends AppCompatActivity {
                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+            else {
+                UtilsManager.showToast("Gagal mendaftar", RegisterActivity.this);
             }
         }
     }
