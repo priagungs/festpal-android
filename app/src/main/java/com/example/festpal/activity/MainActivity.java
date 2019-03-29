@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
     private class SearchFestival extends AsyncTask<String, Void, Integer> {
 
         private String result;
+        private String query;
 
         @Override
         protected void onPreExecute() {
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(String... strings) {
-            String query = strings[0];
+            query = strings[0];
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 ListFestivalFragment listFestivalFragment = new ListFestivalFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("EVENTS", result);
+                bundle.putString("QUERY", query);
                 Log.d(TAG, "onPostExecute: result " + result);
                 listFestivalFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.root_frame, listFestivalFragment).addToBackStack(null).commit();
