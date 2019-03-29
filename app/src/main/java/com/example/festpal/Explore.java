@@ -1,7 +1,5 @@
 package com.example.festpal;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -69,7 +67,7 @@ public class Explore extends Fragment {
         mDotsIndicator = (TabLayout) view.findViewById(R.id.tabDots);
         mFestivalTerdekat = (RecyclerView) view.findViewById(R.id.festival_terdekat);
         FestivalCardAdapter festivalCardAdapter = new FestivalCardAdapter(this.getContext());
-        ImageSliderAdapter adapter = new ImageSliderAdapter(this.getContext());
+        ImageSliderTitleAdapter adapter = new ImageSliderTitleAdapter(this.getContext());
         mImageSlider.setAdapter(adapter);
         mFestivalTerdekat.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
         mFestivalTerdekat.setAdapter(festivalCardAdapter);

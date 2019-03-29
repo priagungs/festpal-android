@@ -8,17 +8,4 @@
         android:layout_width="match_parent"
         android:layout_height="162dp"
         android:id="@+id/imageView" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="NAMA FESTIVAL"
-        android:layout_margin="8dp"
-        android:textSize="18sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Tanggal Festival"
-        android:textSize="14sp"/>
 </LinearLayout>

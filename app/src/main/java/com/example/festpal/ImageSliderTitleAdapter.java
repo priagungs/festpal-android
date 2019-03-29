@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class ImageSliderAdapter extends PagerAdapter {
+public class ImageSliderTitleAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater mLayoutInflater;
     private int[] images = new int[]{
@@ -18,7 +18,7 @@ public class ImageSliderAdapter extends PagerAdapter {
             R.mipmap.ic_launcher_round
     };
 
-    public ImageSliderAdapter(Context context){
+    public ImageSliderTitleAdapter(Context context){
         this.context =context;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -34,7 +34,7 @@ public class ImageSliderAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View itemView = mLayoutInflater.inflate(R.layout.image_slide, container, false);
+        View itemView = mLayoutInflater.inflate(R.layout.image_title_slide, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
         imageView.setImageResource(images[position]);
