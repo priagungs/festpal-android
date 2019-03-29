@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                     .readTimeout(30, TimeUnit.SECONDS)
                     .build();
 
-            String url = Constant.GET_EVENTS + user.getEmail();
+            String url = Constant.GET_USER + user.getEmail();
             Log.d(TAG, "doInBackground: url " + url);
             Request request = new Request.Builder().url(url).build();
             try {
@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                     return -2;
                 }
                 body = response.body().string();
+                Log.d(TAG, "doInBackground: bodyyyy " + body);
                 return 0;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -180,9 +181,10 @@ public class LoginActivity extends AppCompatActivity {
             }
             else {
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                User user = gson.fromJson(body, User.class);
-                user.setPicture(user.getPicture());
-                UtilsManager.saveUser(LoginActivity.this, user);
+                Log.d(TAG, "onPostExecute: body " + body);
+                User usr = gson.fromJson(body, User.class);
+                usr.setPicture(user.getPhotoUrl().toString());
+                UtilsManager.saveUser(LoginActivity.this, usr);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

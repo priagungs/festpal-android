@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "190455041470-o067d4alvcm8dr97nviflma98evp3v9a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.festpal",
+            "certificate_hash": "718583e9f1b7c9d9fac6c9cea33f8dda0b735de0"
+          }
+        },
+        {
           "client_id": "190455041470-707qv3daqgrgvsisrav2ladq1jb3kk32.apps.googleusercontent.com",
           "client_type": 3
         }
