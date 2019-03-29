@@ -62,23 +62,32 @@ public class DetailsFestivalTourist extends AppCompatActivity {
         mDotsIndicator = (TabLayout) findViewById(R.id.tabDots);
         mFavorite = (ImageView) findViewById(R.id.festival_details_favorite);
         user = UtilsManager.getUser(this);
+        Log.d(TAG, "onCreate: favorite festivals\n" + user.getFavoriteFestivals());
+        Log.d(TAG, "onCreate: id event " + event.getId());
         if (user.getFavoriteFestivals().contains(event.getId())) {
             favorited = true;
         }
         else {
             favorited = false;
         }
+        if (favorited) {
+            mFavorite.setImageResource(R.drawable.ic_favorite_redacc_24dp);
+        }
+        else {
+            mFavorite.setImageResource(R.drawable.ic_favorite_border_redacc_24dp);
+        }
         mFavorite.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                favorited = !favorited;
                 if (favorited) {
-                    mFavorite.setImageResource(R.drawable.ic_favorite_border_redacc_24dp);
-                }
-                else {
+                    new AddFavorite(true).execute();
                     mFavorite.setImageResource(R.drawable.ic_favorite_redacc_24dp);
                 }
-                favorited = !favorited;
-                new AddFavorite().execute();
+                else {
+                    new AddFavorite(false).execute();
+                    mFavorite.setImageResource(R.drawable.ic_favorite_border_redacc_24dp);
+                }
                 return true;
             }
         });
@@ -112,6 +121,11 @@ public class DetailsFestivalTourist extends AppCompatActivity {
 
     private class AddFavorite extends AsyncTask<Void, Void, Boolean> {
 
+        private Boolean isFavorite;
+        public AddFavorite(Boolean isFavorite) {
+            this.isFavorite = isFavorite;
+        }
+
         @Override
         protected Boolean doInBackground(Void... voids) {
 
@@ -120,8 +134,13 @@ public class DetailsFestivalTourist extends AppCompatActivity {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .build();
-
-            String url = Constant.PUT_FAVORITE;
+            String url = null;
+            if (isFavorite) {
+                url = Constant.PUT_FAVORITE;
+            }
+            else {
+                url = Constant.PUT_FAVORITE + "/remove";
+            }
             Map<String, String> val = new HashMap<>();
             val.put("idUser", user.getId());
             val.put("idEvent", event.getId());
@@ -150,7 +169,12 @@ public class DetailsFestivalTourist extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
-                user.getFavoriteFestivals().add(event.getId());
+                if (isFavorite) {
+                    user.getFavoriteFestivals().add(event.getId());
+                }
+                else {
+                    user.getFavoriteFestivals().remove(event.getId());
+                }
                 UtilsManager.saveUser(DetailsFestivalTourist.this, user);
             }
         }

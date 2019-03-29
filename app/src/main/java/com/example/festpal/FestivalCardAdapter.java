@@ -40,7 +40,7 @@ public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FestCardViewHolder festCardViewHolder, final int i) {
-        festCardViewHolder.mFestName.setOnClickListener(new View.OnClickListener() {
+        festCardViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String event = new Gson().toJson(events.get(i));
@@ -67,8 +67,10 @@ public class FestivalCardAdapter extends RecyclerView.Adapter<FestivalCardAdapte
     public class FestCardViewHolder extends RecyclerView.ViewHolder{
         public ImageView mFestPhoto;
         public TextView mFestName;
+        public View itemView;
         public FestCardViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.itemView = itemView;
             mFestName = (TextView) itemView.findViewById(R.id.festival_terdekat_name);
             mFestPhoto = (ImageView) itemView.findViewById(R.id.festival_terdekat_photo);
         }
