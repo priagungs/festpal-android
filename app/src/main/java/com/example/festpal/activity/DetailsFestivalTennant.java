@@ -70,7 +70,7 @@ public class DetailsFestivalTennant extends AppCompatActivity {
                             @Override
                             public void finish(boolean result) {
                                 if(result){
-                                    Log.d("SAP","SAP");
+                                    Intent intent = new Intent(DetailsFestivalTennant.this , PaymentActivity.class);
                                 }
                             }
                         });

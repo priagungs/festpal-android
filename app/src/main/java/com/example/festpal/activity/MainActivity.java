@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(rootFragment);
         User user = UtilsManager.getUser(this);
         if(user.getUMKM()){
-            viewPagerAdapter.addFragment(bookedFragment);
+            viewPagerAdapter.addFragment(new BookedFragment());
         }else{
             viewPagerAdapter.addFragment(new FavoriteFragment());
         }

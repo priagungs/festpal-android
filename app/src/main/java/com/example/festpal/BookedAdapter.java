@@ -31,7 +31,7 @@ public class BookedAdapter extends RecyclerView.Adapter<BookedAdapter.BookedView
     @Override
     public BookedAdapter.BookedViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.rvitem_festival_tent_booked_list,viewGroup,false);
-        return null;
+        return new BookedViewHolder(view);
     }
 
     @Override

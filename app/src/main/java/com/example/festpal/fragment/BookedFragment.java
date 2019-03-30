@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.festpal.BookedAdapter;
 import com.example.festpal.FavoriteAdapter;
 import com.example.festpal.FestivalCardAdapter;
 import com.example.festpal.R;
@@ -46,6 +47,7 @@ public class BookedFragment extends Fragment {
 
     private EditText etSearch;
     private ImageView btnSearch;
+    private RecyclerView booked;
 
     private User user;
 
@@ -76,9 +78,62 @@ public class BookedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_booked, container, false);
+        booked = view.findViewById(R.id.rv_items);
         user = UtilsManager.getUser(getContext());
+
+        new BookedFestival().execute();
         return view;
     }
 
+    private class BookedFestival extends AsyncTask<String, Void, Integer> {
+
+        private String result;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            String url = Constant.GET_EVENTS_BOOKED_USER + user.getEmail();
+            Log.d(TAG, "doInBackground: url " + url);
+            Request request = new Request.Builder().url(url).build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d(TAG, "doInBackground: response code " + response.code());
+                if (response.code() != 200) {
+                    return -1;
+                }
+                result = response.body().string();
+                return 0;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return -2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer i) {
+            super.onPostExecute(i);
+            if (i == -1) {
+                UtilsManager.showToast("Festival tidak ditemukan", getActivity());
+            } else if (i == -2) {
+                UtilsManager.showToast("Koneksi Bermasalah", getActivity());
+            } else if (i == 0) {
+                Type listOfTestObject = new TypeToken<List<Event>>() {
+                }.getType();
+                List<Event> events = new Gson().fromJson(result, listOfTestObject);
+                BookedAdapter bookedAdapter = new BookedAdapter(events, BookedFragment.this.getContext());
+                booked.setAdapter(bookedAdapter);
+            }
+        }
+    }
 
 }
