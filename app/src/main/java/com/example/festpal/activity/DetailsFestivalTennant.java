@@ -71,6 +71,7 @@ public class DetailsFestivalTennant extends AppCompatActivity {
                             public void finish(boolean result) {
                                 if(result){
                                     Intent intent = new Intent(DetailsFestivalTennant.this , PaymentActivity.class);
+                                    DetailsFestivalTennant.this.startActivity(intent);
                                 }
                             }
                         });
