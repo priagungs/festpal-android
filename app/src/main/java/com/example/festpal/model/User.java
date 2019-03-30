@@ -37,7 +37,7 @@ public class User {
 
     @SerializedName("bookedStands")
     @Expose
-    List<String> bookedStands;
+    List<Booking> bookedStands;
 
     @SerializedName("favoriteFestivals")
     @Expose
@@ -109,11 +109,11 @@ public class User {
         this.business = business;
     }
 
-    public List<String> getBookedStands() {
+    public List<Booking> getBookedStands() {
         return bookedStands;
     }
 
-    public void setBookedStands(List<String> bookedStands) {
+    public void setBookedStands(List<Booking> bookedStands) {
         this.bookedStands = bookedStands;
     }
 

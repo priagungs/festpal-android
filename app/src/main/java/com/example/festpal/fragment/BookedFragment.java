@@ -18,6 +18,7 @@ import com.example.festpal.BookedAdapter;
 import com.example.festpal.FavoriteAdapter;
 import com.example.festpal.FestivalCardAdapter;
 import com.example.festpal.R;
+import com.example.festpal.model.BookingResponse;
 import com.example.festpal.model.Event;
 import com.example.festpal.model.User;
 import com.example.festpal.utils.Constant;
@@ -48,6 +49,7 @@ public class BookedFragment extends Fragment {
     private EditText etSearch;
     private ImageView btnSearch;
     private RecyclerView booked;
+    BookedAdapter bookedAdapter;
 
     private User user;
 
@@ -83,6 +85,12 @@ public class BookedFragment extends Fragment {
 
         new BookedFestival().execute();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new BookedFestival().execute();
     }
 
     private class BookedFestival extends AsyncTask<String, Void, Integer> {
@@ -127,11 +135,15 @@ public class BookedFragment extends Fragment {
             } else if (i == -2) {
                 UtilsManager.showToast("Koneksi Bermasalah", getActivity());
             } else if (i == 0) {
-                Type listOfTestObject = new TypeToken<List<Event>>() {
+                Type listOfTestObject = new TypeToken<List<BookingResponse>>() {
                 }.getType();
-                List<Event> events = new Gson().fromJson(result, listOfTestObject);
-                BookedAdapter bookedAdapter = new BookedAdapter(events, BookedFragment.this.getContext());
+                Log.d(TAG, "onPostExecute: result\n" + result);
+                List<BookingResponse> events = new Gson().fromJson(result, listOfTestObject);
+                Log.d(TAG, "onPostExecute: eventsss\n" + events);
+                bookedAdapter = new BookedAdapter(events, BookedFragment.this.getContext());
                 booked.setAdapter(bookedAdapter);
+                booked.setLayoutManager(new LinearLayoutManager(getContext()));
+
             }
         }
     }
